@@ -1,26 +1,28 @@
-import com.sun.tools.javac.Main;
-
-import javax.swing.*;
-import java.awt.*;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.Scanner;
+import java.io.*;
 import java.util.Vector;
 
 public class TextSource {
-    private Vector<String> wordVector = new Vector<String>(30_000);
-    public TextSource(Component parent) {
+    private Vector<String> wordVector = new Vector<String>();
+
+    public TextSource() {
+        fileRead();
+    }
+    private void fileRead() {
+        FileInputStream fileInputStream;
         try {
-            Scanner scanner = new Scanner(new FileReader("words.txt")); // File Read.
-            while (scanner.hasNext()) {
-                String word = scanner.nextLine();
+            fileInputStream = new FileInputStream("textSource/words.txt"); // File Read.
+            DataInputStream dataInputStream = new DataInputStream(fileInputStream);
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(dataInputStream));
+            String word;
+            int i = 0;
+            while ((word = bufferedReader.readLine()) != null) {
                 wordVector.add(word);
+                i++;
             }
-            scanner.close();
             // JOptionPane.showMessageDialog(parent, "File read succeed.");
-        } catch (FileNotFoundException e) {
-            System.out.println("No File");
-            System.exit(0);
+        } catch (Exception e) {
+                System.out.println("No File");
+                System.exit(0);
         }
     }
 

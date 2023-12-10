@@ -59,4 +59,14 @@ public class ScorePanel extends JPanel {
 
         scoreLabel.setText(Integer.toString(score));
     }
+
+    public int scoreCheck() {
+        if (score >= 100 && score < 200) {
+            return 2;
+        } else if (score >= 200) {
+            return 3;
+        } else {
+            return 1;
+        }
+    }
 }

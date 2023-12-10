@@ -7,7 +7,7 @@ public class GameFrame extends JFrame {
     private GamePanel gamePanel = null;
     private TextSource textSource = null;
     public GameFrame() {
-        setTitle("게임");
+        setTitle("추추 간식주기");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBackground(Color.WHITE);
@@ -24,25 +24,26 @@ public class GameFrame extends JFrame {
         JMenuBar menuBar = new JMenuBar();
         this.setJMenuBar(menuBar);
 
-        JMenu fileMenu = new JMenu("File");
-        fileMenu.add(new JMenuItem("Open"));
-        fileMenu.add(new JMenuItem("Save"));
-        fileMenu.add(new JMenuItem("Save As"));
-        fileMenu.addSeparator(); // ---
-        JMenuItem exitItem = new JMenuItem("Exit");
-        exitItem.addActionListener(new ActionListener() {
+        JMenu exitMenu = new JMenu("Exit");
+        JMenu edit = new JMenu("Edit");
+        JMenuItem addWord = new JMenuItem("Add Word");
+        edit.add(addWord);
+
+        menuBar.add(exitMenu);
+        menuBar.add(edit);
+
+        exitMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
             }
         });
-        fileMenu.add(exitItem);
-        menuBar.add(fileMenu);
-
-        JMenu editMenu = new JMenu("Edit");
-        editMenu.add(new JMenuItem("insert"));
-        editMenu.add(new JMenuItem("replace"));
-        menuBar.add(editMenu);
+        addWord.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                textAddFrame addText = new textAddFrame();
+            }
+        });
     }
 
     public void makeToolbar() {
