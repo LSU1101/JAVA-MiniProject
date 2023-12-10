@@ -10,7 +10,7 @@ public class GameGround extends JPanel {
     private TextSource textSource = null;
     private final JLabel[] label = new JLabel[7];
     private JTextField input = new JTextField(20);
-    private Vector<JLabel> answerLabel = new Vector<>();
+    private Vector<Integer> answerIndex = new Vector<>();
     private ImageIcon img;
 
     private Color[] colors = {new Color(0xE89898), new Color(0xD07951), new Color(0xD5C991), new Color(0x8FCE6C), new Color(0x98B8E8), new Color(0x3F4E94), new Color(0x815CAF)};
@@ -31,37 +31,64 @@ public class GameGround extends JPanel {
         input.setLocation(120, 500);
         add(input);
 
-        input.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JTextField textField = (JTextField)e.getSource();
-                String text = textField.getText();
-                textField.setText("");
-
-                for (int i = 0; i < label.length; i++) {
-                    if (text.equals(label[i].getText()) && !text.equals("참치캔")) {
-                        clear(i);
-                        scorePanel.increase();
-                        return;// 맞추면 탈출
-                    } else if (text.equals(label[i].getText()) && text.equals("참치캔")) {
-                        clear(i);
-                        scorePanel.increase();
-                        scorePanel.increase();
-                        return;
-                    }
-                }
-                scorePanel.decrease();
-            }
-
-            private void clear(int index) {
-                label[index].setForeground(new Color(77, 54, 39));
-                label[index].setText("🐈맛있다!🐈");
-                label[index].setFont(new Font("Apple SD Gothic Neo", Font.BOLD, 18));
-            }
-        });
+        input.addActionListener(new inputActionListener());
 
         MyThread thread = new MyThread();
         thread.start();
+    }
+
+    class inputActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JTextField textField = (JTextField)e.getSource();
+            String text = textField.getText();
+            textField.setText("");
+            int index;
+
+            for (int i = 0; i < label.length; i++) {
+                if (text.equals(label[i].getText())) {
+                    answerIndex.add(i);
+                }
+            }
+            if (answerIndex.size() > 0) {
+                index = clearIndex(answerIndex);
+                if (label[index].getText().equals("참치캔")) { // 20점 추가 가산
+                    scorePanel.increase();
+                    scorePanel.increase();
+                }
+                scorePanel.increase();
+                clear(index);
+                answerIndex.removeAllElements();
+            } else {
+                scorePanel.decrease();
+                answerIndex.removeAllElements();
+            }
+        }
+    }
+
+    private void clear(int index) {
+        label[index].setForeground(new Color(77, 54, 39));
+        label[index].setText("🐈맛있다!🐈");
+        label[index].setFont(new Font("Apple SD Gothic Neo", Font.BOLD, 18));
+    }
+
+    // 삭제할 레이블 정하기, 똑같은 텍스트가 있다면 밑에 있는 걸 먼저 삭제
+    private int clearIndex(Vector<Integer> answerIndex) {
+        int clearTarget = 0;
+        int clearTargetY = 0;
+        if (answerIndex.size() < 2) {
+            return answerIndex.get(0);
+        } else {
+            for (int i = 0; i < answerIndex.size(); i++) {
+                int y = label[answerIndex.get(i)].getY();
+
+                if (y > clearTargetY) {
+                    clearTargetY = y;
+                    clearTarget = answerIndex.get(i);
+                }
+            }
+            return clearTarget;
+        }
     }
 
     class MyThread extends Thread {
