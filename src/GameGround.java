@@ -1,14 +1,18 @@
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 
 public class GameGround extends JPanel {
     private ScorePanel scorePanel = null;
     private TextSource textSource = null;
     private final JLabel[] label = new JLabel[7];
     private JTextField input = new JTextField(20);
+    private Vector<JLabel> answerLabel = new Vector<>();
     private ImageIcon img;
+
     private Color[] colors = {new Color(0xE89898), new Color(0xD07951), new Color(0xD5C991), new Color(0x8FCE6C), new Color(0x98B8E8), new Color(0x3F4E94), new Color(0x815CAF)};
 
     public GameGround(ScorePanel scorePanel) {
@@ -19,8 +23,12 @@ public class GameGround extends JPanel {
         setBackground(beige);
         textSource = new TextSource();
 
-        input.setSize(300, 20);
-        input.setLocation(100, 300);
+        input.setSize(300, 40);
+        input.setFont(new Font("Apple SD Gothic Neo", Font.BOLD, 18));
+        input.setHorizontalAlignment(JTextField.CENTER);
+        input.setForeground(new Color(77, 54, 39));
+        input.setBorder(new LineBorder(new Color(77, 54, 39), 2));
+        input.setLocation(120, 500);
         add(input);
 
         input.addActionListener(new ActionListener() {
@@ -85,11 +93,11 @@ public class GameGround extends JPanel {
                 }
 
                 for (int i = 0; i < label.length; i++) {
-                    if (label[i].getY() > 300 && !label[i].getText().equals("🐈맛있다!🐈")) {
+                    if (label[i].getY() > 500 && !label[i].getText().equals("🐈맛있다!🐈")) {
                         addText(i);
                     }
 
-                    if (label[i].getText().equals("🐈맛있다!🐈") && label[i].getY() > 300) { // 맞춘거
+                    if (label[i].getText().equals("🐈맛있다!🐈") && label[i].getY() > 500) { // 맞춘거
                         label[i].setText("");
                         addText(i);
                     }
@@ -118,7 +126,7 @@ public class GameGround extends JPanel {
         label[index].setSize(100, 20);
         String word = textSource.next();
 
-        int x = (int)(Math.random() * 400);
+        int x = (int)(Math.random() * 450);
         int y = (int)(Math.random() * 30);
         int xDifference;
         int yDifference;
@@ -128,9 +136,9 @@ public class GameGround extends JPanel {
             yDifference = Math.abs(label[i].getY() - y); // 절댓값
 
             if (xDifference < 50) { // 위치가 겹치면
-                x += 40;
-                if (x > 400) {
-                    x = 0;
+                x += 100;
+                if (x > 450) {
+                    x = (int)(Math.random() * 100);
                 }
             }
             if (yDifference < 20) {
@@ -151,8 +159,8 @@ public class GameGround extends JPanel {
             label[i].setSize(100, 20);
             String word = textSource.next();
 
-            int x = (int)(Math.random() * 400);
-            int y = (int)(Math.random() * 50 + 50);
+            int x = (int)(Math.random() * 450);
+            int y = (int)(Math.random() * 200 + 50);
             int xDifference;
             int yDifference;
 
@@ -161,8 +169,8 @@ public class GameGround extends JPanel {
                 yDifference = Math.abs(label[j].getY() - y); // 절댓값
 
                 if (xDifference < 100) { // 위치가 겹치면
-                    x += 40;
-                    if (x > 400) {
+                    x += 100;
+                    if (x > 450) {
                         x = 0;
                     }
                 }
@@ -181,7 +189,7 @@ public class GameGround extends JPanel {
     private void textSet(int index, int x, int y, String word) {
         label[index].setText(word);
         label[index].setForeground(new Color(77, 54, 39));
-        label[index].setFont(new Font("Apple SD Gothic Neo", Font.BOLD, 15));
+        label[index].setFont(new Font("Apple SD Gothic Neo", Font.BOLD, 18));
         label[index].setLocation(x, y);
         add(label[index]);
     }

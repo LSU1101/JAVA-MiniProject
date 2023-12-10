@@ -11,7 +11,7 @@ public class ScorePanel extends JPanel {
     private int incorrectCount = 0;
 
     public ScorePanel() {
-        setBackground(Color.GRAY);
+        setBackground(new Color(171, 151, 134));
         JLabel scoreText = new JLabel("점수: ");
 
         scoreText.setForeground(Color.WHITE);
