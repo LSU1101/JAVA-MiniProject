@@ -10,6 +10,10 @@ public class ScorePanel extends JPanel {
     private int correctCount = 0;
     private int incorrectCount = 0;
 
+    public int getScore() {
+        return score;
+    }
+
     public ScorePanel() {
         setBackground(new Color(171, 151, 134));
         JLabel scoreText = new JLabel("점수: ");

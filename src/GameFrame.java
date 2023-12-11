@@ -5,17 +5,19 @@ import java.awt.event.ActionListener;
 
 public class GameFrame extends JFrame {
     private GamePanel gamePanel = null;
-    private StartDisplay startDisplay = null;
-    private TextSource textSource = null;
-    public GameFrame() {
+    public String playerName;
+
+    public GameFrame(String playerName) {
         setTitle("떨어지는 단어를 입력하자!");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBackground(Color.WHITE);
+        setResizable(false);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         makeMenu();
-        // makeToolbar();
-        gamePanel = new GamePanel();
+        gamePanel = new GamePanel(playerName);
 
         getContentPane().add(gamePanel, BorderLayout.CENTER);
 

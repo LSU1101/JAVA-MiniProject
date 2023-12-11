@@ -1,11 +1,12 @@
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class GamePanel extends JPanel {
     private ScorePanel scorePanel = new ScorePanel();
+    private String name;
 
-    public GamePanel() {
+    public GamePanel(String name) {
+        this.name = name;
         setBackground(Color.GRAY);
         setLayout(new BorderLayout());
         splitPanel();
@@ -27,9 +28,9 @@ public class GamePanel extends JPanel {
         hPane.setRightComponent(vPane);
 
         vPane.setTopComponent(scorePanel);
-        vPane.setBottomComponent(new EditPanel());
+        vPane.setBottomComponent(new RecordPanel());
 
         hPane.setRightComponent(vPane);
-        hPane.setLeftComponent(new GameGround(scorePanel));
+        hPane.setLeftComponent(new GameGround(scorePanel, name));
     }
 }

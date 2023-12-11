@@ -43,6 +43,7 @@ public class textAddFrame extends JFrame {
             String word = textField.getText();
             textField.setText("");
             addWord(word);
+            textField.requestFocus();
         }
     }
 

@@ -9,14 +9,19 @@ public class GameGround extends JPanel {
     private ScorePanel scorePanel = null;
     private TextSource textSource = null;
     private final JLabel[] label = new JLabel[7];
-    private JTextField input = new JTextField(20);
-    private Vector<Integer> answerIndex = new Vector<>();
-    private ImageIcon img;
+    private final JLabel timeLabel = new JLabel();
+    private final JTextField input = new JTextField(20);
+    private final Vector<Integer> answerIndex = new Vector<>();
+    private final TimeThread timeThread = new TimeThread();
+    private final GameThread gameThread = new GameThread();
+    private boolean waitToggle = false;
+    private final String playerName;
 
-    private Color[] colors = {new Color(0xE89898), new Color(0xD07951), new Color(0xD5C991), new Color(0x8FCE6C), new Color(0x98B8E8), new Color(0x3F4E94), new Color(0x815CAF)};
+    private final Color[] colors = {new Color(0xE89898), new Color(0xD07951), new Color(0xD5C991), new Color(0x8FCE6C), new Color(0x98B8E8), new Color(0x3F4E94), new Color(0x815CAF)};
 
-    public GameGround(ScorePanel scorePanel) {
+    public GameGround(ScorePanel scorePanel, String playerName) {
         this.scorePanel = scorePanel;
+        this.playerName = playerName;
         setLayout(null);
 
         Color beige = new Color(240, 236, 225);
@@ -33,13 +38,41 @@ public class GameGround extends JPanel {
 
         input.addActionListener(new inputActionListener());
 
-        MyThread thread = new MyThread();
-        thread.start();
+        timeLabel.setFont(new Font("Apple SD Gothic Neo", Font.BOLD, 20));
+        timeLabel.setHorizontalAlignment(JLabel.RIGHT);
+        timeLabel.setBounds(478, 7, 60, 20);
+        add(timeLabel);
+
+        JButton pause = new JButton("일시 정지");
+        pause.setBounds(10, 7, 20, 20);
+        pause.setBackground(new Color(77, 54, 39));
+        pause.setFont(new Font("Apple SD Gothic Neo", Font.BOLD, 15));
+        add(pause);
+
+        pause.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!waitToggle) {
+                    timeThread.pauseTime();
+                    gameThread.pauseTime();
+                } else {
+                    timeThread.resumeTime();
+                    gameThread.resumeTime();
+                }
+                waitToggle = !waitToggle;
+            }
+        });
+
+        timeThread.start();
+        gameThread.start();
     }
 
     class inputActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            if (waitToggle) {
+                return;
+            }
             JTextField textField = (JTextField)e.getSource();
             String text = textField.getText();
             textField.setText("");
@@ -91,7 +124,26 @@ public class GameGround extends JPanel {
         }
     }
 
-    class MyThread extends Thread {
+    class GameThread extends Thread {
+        private boolean pauseFlag = false;
+        public void pauseTime() {
+            pauseFlag = true;
+        }
+
+        synchronized public void resumeTime() {
+            pauseFlag = false;
+            notify();
+        }
+
+        synchronized public void pauseCheck() {
+            if (pauseFlag) {
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    return;
+                }
+            }
+        }
         @Override
         public void run() {
             textInit(); // 처음 글자 생성
@@ -106,6 +158,8 @@ public class GameGround extends JPanel {
             add(levelLabel);
 
             while (true) {
+                pauseCheck();
+
                 if (scorePanel.scoreCheck() == 1) {
                     speedLevel = 0;
                     levelLabel.setText("LEVEL 1 !");
@@ -142,6 +196,53 @@ public class GameGround extends JPanel {
 
                 try {
                     sleep(100);
+                } catch (InterruptedException e) {
+                    return;
+                }
+            }
+        }
+    }
+
+    class TimeThread extends Thread {
+        private int sec = 0;
+        private boolean pauseFlag = false;
+
+        public int getSec() {
+            return sec;
+        }
+
+        public void pauseTime() {
+            pauseFlag = true;
+        }
+
+        synchronized public void resumeTime() {
+            pauseFlag = false;
+            notify();
+        }
+
+        synchronized public void pauseCheck() {
+            if (pauseFlag) {
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    return;
+                }
+            }
+        }
+
+        synchronized public void run() {
+            while (true) {
+                pauseCheck();
+                sec++;
+                if (sec == 5) {
+                    gameThread.interrupt();
+                    timeThread.interrupt();
+                    GameOverFrame gameOver = new GameOverFrame(scorePanel.getScore(), playerName);
+                    setVisible(false);
+                }
+                try {
+                    timeLabel.setText(sec + "초");
+                    sleep(1_000);
                 } catch (InterruptedException e) {
                     return;
                 }
