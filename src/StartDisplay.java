@@ -60,10 +60,7 @@ public class StartDisplay extends JFrame {
     class startPanel extends JPanel {
         @Override
         public void paintComponent(Graphics g) {
-            //super.paintComponent(g); // 기존의 그림을 지우고 다시 그리도록 추가
-
             g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), this); // this or null
-
         }
     }
 }

@@ -147,6 +147,7 @@ public class GameGround extends JPanel {
         @Override
         public void run() {
             textInit(); // 처음 글자 생성
+            input.requestFocus();
             int colorChange = 0;
             int speedLevel;
 
@@ -234,7 +235,7 @@ public class GameGround extends JPanel {
             while (true) {
                 pauseCheck();
                 sec++;
-                if (sec == 5) {
+                if (sec == 30) {
                     gameThread.interrupt();
                     timeThread.interrupt();
                     GameOverFrame gameOver = new GameOverFrame(scorePanel.getScore(), playerName);

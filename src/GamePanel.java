@@ -3,6 +3,7 @@ import java.awt.*;
 
 public class GamePanel extends JPanel {
     private ScorePanel scorePanel = new ScorePanel();
+
     private String name;
 
     public GamePanel(String name) {
