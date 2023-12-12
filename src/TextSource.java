@@ -1,4 +1,5 @@
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Vector;
 
 public class TextSource {
@@ -10,7 +11,7 @@ public class TextSource {
     private void fileRead() {
         FileInputStream fileInputStream;
         try {
-            fileInputStream = new FileInputStream("textSource/words.txt"); // File Read.
+            fileInputStream = new FileInputStream("words.txt"); // File Read.
             DataInputStream dataInputStream = new DataInputStream(fileInputStream);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(dataInputStream));
             String word;
@@ -21,7 +22,7 @@ public class TextSource {
             }
             // JOptionPane.showMessageDialog(parent, "File read succeed.");
         } catch (Exception e) {
-                System.out.println("No File");
+                System.out.println("No words File");
                 System.exit(0);
         }
     }

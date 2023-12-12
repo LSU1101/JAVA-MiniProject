@@ -3,9 +3,10 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 public class StartDisplay extends JFrame {
-    private ImageIcon icon = new ImageIcon("homeScreen.png");
+    private ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("homeScreen.png")));
     private Image img = icon.getImage();
     private JTextField inputName = new JTextField();
     public GameFrame gameFrame;
@@ -28,7 +29,7 @@ public class StartDisplay extends JFrame {
         add(inputName);
 
         JButton startButton = new JButton("시작!");
-        startButton.setBounds(430, 515, 50, 30);
+        startButton.setBounds(430, 515, 60, 30);
         startButton.setBorder(new LineBorder(new Color(255, 240, 240), 5));
         startButton.setBackground(new Color(255, 240, 240, 255));
         startButton.setFont(new Font("Apple SD Gothic Neo", Font.BOLD, 15));

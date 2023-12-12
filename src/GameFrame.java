@@ -47,9 +47,11 @@ public class GameFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 StartDisplay startDisplay = new StartDisplay();
+
                 setVisible(false);
             }
         });
+
         addWord.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

@@ -2,12 +2,13 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.io.File;
+import java.util.Objects;
 
 public class ScorePanel extends JPanel {
     private int score = 0;
     private ImageIcon img;
     private final JLabel scoreLabel = new JLabel(Integer.toString(score));
-    private final JLabel image = new JLabel(new ImageIcon("scoreImage/default.png"));
+    private final JLabel image = new JLabel(new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("default.png"))));
     private int correctCount = 0;
     private int incorrectCount = 0;
 
@@ -37,10 +38,10 @@ public class ScorePanel extends JPanel {
         correctCount++;
         
         if (correctCount > 1) {
-            img = new ImageIcon("scoreImage/happy.png");
+            img = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("happy.png")));
             image.setIcon(img);
         } else if (correctCount == 1){
-            img = new ImageIcon("scoreImage/default.png");
+            img = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("default.png")));
             image.setIcon(img);
         }
     }
@@ -55,10 +56,10 @@ public class ScorePanel extends JPanel {
         }
         
         if (incorrectCount == 1) {
-            img = new ImageIcon("scoreImage/sleep.png");
+            img = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("sleep.png")));
             image.setIcon(img);
         } else if (incorrectCount > 1) {
-            img = new ImageIcon("scoreImage/angry.png");
+            img = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("angry.png")));
             image.setIcon(img);
         }
 

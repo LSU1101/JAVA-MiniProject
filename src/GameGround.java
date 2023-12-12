@@ -1,8 +1,12 @@
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.Vector;
 
 public class GameGround extends JPanel {
@@ -14,8 +18,10 @@ public class GameGround extends JPanel {
     private final Vector<Integer> answerIndex = new Vector<>();
     private final TimeThread timeThread = new TimeThread();
     private final GameThread gameThread = new GameThread();
+    private final MusicThread musicThread = new MusicThread();
     private boolean waitToggle = false;
     private final String playerName;
+    private Clip clip;
 
     private final Color[] colors = {new Color(0xE89898), new Color(0xD07951), new Color(0xD5C991), new Color(0x8FCE6C), new Color(0x98B8E8), new Color(0x3F4E94), new Color(0x815CAF)};
 
@@ -44,10 +50,18 @@ public class GameGround extends JPanel {
         add(timeLabel);
 
         JButton pause = new JButton("일시 정지");
-        pause.setBounds(10, 7, 20, 20);
+        pause.setBounds(10, 5, 80, 20);
+        pause.setForeground(Color.WHITE);
         pause.setBackground(new Color(77, 54, 39));
-        pause.setFont(new Font("Apple SD Gothic Neo", Font.BOLD, 15));
+        pause.setFont(new Font("Apple SD Gothic Neo", Font.BOLD, 10));
         add(pause);
+
+        JButton pauseMusic = new JButton("노래 끄기");
+        pauseMusic.setBounds(100, 5, 80, 20);
+        pauseMusic.setForeground(Color.WHITE);
+        pauseMusic.setBackground(new Color(77, 54, 39));
+        pauseMusic.setFont(new Font("Apple SD Gothic Neo", Font.BOLD, 10));
+        add(pauseMusic);
 
         pause.addActionListener(new ActionListener() {
             @Override
@@ -55,14 +69,32 @@ public class GameGround extends JPanel {
                 if (!waitToggle) {
                     timeThread.pauseTime();
                     gameThread.pauseTime();
+                    musicThread.stopMusic();
                 } else {
                     timeThread.resumeTime();
                     gameThread.resumeTime();
+                    musicThread.resumeMusic();
                 }
                 waitToggle = !waitToggle;
             }
         });
 
+        pauseMusic.addActionListener(new ActionListener() {
+            private boolean isOn = true;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (isOn) {
+                    musicThread.stopMusic();
+                    isOn = false;
+                    pauseMusic.setText("노래 켜기");
+                } else {
+                    musicThread.resumeMusic();
+                    isOn = true;
+                }
+            }
+        });
+
+        musicThread.start();
         timeThread.start();
         gameThread.start();
     }
@@ -89,9 +121,9 @@ public class GameGround extends JPanel {
                     scorePanel.increase();
                     scorePanel.increase();
                 }
-                scorePanel.increase();
                 clear(index);
                 answerIndex.removeAllElements();
+                scorePanel.increase();
             } else {
                 scorePanel.decrease();
                 answerIndex.removeAllElements();
@@ -238,6 +270,7 @@ public class GameGround extends JPanel {
                 if (sec == 30) {
                     gameThread.interrupt();
                     timeThread.interrupt();
+                    musicThread.stopMusic();
                     GameOverFrame gameOver = new GameOverFrame(scorePanel.getScore(), playerName);
                     setVisible(false);
                 }
@@ -248,6 +281,34 @@ public class GameGround extends JPanel {
                     return;
                 }
             }
+        }
+    }
+
+    private void loadAudio() {
+        try {
+            clip = AudioSystem.getClip();
+            File audioFile = new File("bgm.wav");
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
+            clip.open(audioInputStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("error");
+        }
+    }
+
+    class MusicThread extends Thread {
+        synchronized public void run() {
+            loadAudio();
+            clip.setFramePosition(0);
+            clip.start();
+        }
+
+        synchronized public void stopMusic() {
+            clip.stop();
+        }
+
+        synchronized public void resumeMusic() {
+            clip.start();
         }
     }
 

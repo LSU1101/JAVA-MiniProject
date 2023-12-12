@@ -5,14 +5,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.nio.Buffer;
+import java.util.Objects;
 import java.util.Vector;
 
 
 
 public class RecordPanel extends JPanel {
-    private ImageIcon icon = new ImageIcon("bye.png");
+    private ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("bye.png")));
     private Image image = icon.getImage();
-    private File file = new File("textSource/records.txt");
+    private File file = new File("records.txt");
 
     public RecordPanel() {
         setBackground(new Color(114, 102, 84));
@@ -51,7 +52,7 @@ public class RecordPanel extends JPanel {
                 i++;
             }
         } catch (Exception e) {
-            System.out.println("File error.");
+            System.out.println("records File error.");
         }
 
         JLabel easterEgg = new JLabel();

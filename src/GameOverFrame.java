@@ -33,7 +33,7 @@ class Player { // 플레이어 클래스 (이름과 점수)
 
 public class GameOverFrame extends JFrame {
     private static Vector<Player> players = new Vector<>();
-    private File file = new File("textSource/records.txt");
+    private File file = new File("records.txt");
 
     public GameOverFrame(int score, String playName) {
         recordWrite(playName, score, 1); // 파일에 쓰기

@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.*;
 public class textAddFrame extends JFrame {
     private JTextField textField;
-    File file = new File("textSource/words.txt");
+    File file = new File("words.txt");
 
     public textAddFrame() {
         setTitle("어떤 단어를 추가 할까요?");
