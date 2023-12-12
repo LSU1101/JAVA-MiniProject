@@ -36,17 +36,18 @@ public class ScorePanel extends JPanel {
         scoreLabel.setText(Integer.toString(score));
         incorrectCount = 0;
         correctCount++;
-        
+
+        // 두 번 연속 맞았으면
         if (correctCount > 1) {
             img = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("happy.png")));
             image.setIcon(img);
-        } else if (correctCount == 1){
+        } else if (correctCount == 1){ // 한 번 맞았으면
             img = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("default.png")));
             image.setIcon(img);
         }
     }
 
-    public void decrease() {
+    public void decrease() { // 감소
         score -= 10;
         correctCount = 0;
         incorrectCount++;
@@ -55,10 +56,10 @@ public class ScorePanel extends JPanel {
             score = 0;
         }
         
-        if (incorrectCount == 1) {
+        if (incorrectCount == 1) { // 한 번 틀리면
             img = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("sleep.png")));
             image.setIcon(img);
-        } else if (incorrectCount > 1) {
+        } else if (incorrectCount > 1) { // 두 번 틀리면
             img = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("angry.png")));
             image.setIcon(img);
         }
@@ -66,13 +67,13 @@ public class ScorePanel extends JPanel {
         scoreLabel.setText(Integer.toString(score));
     }
 
-    public int scoreCheck() {
-        if (score >= 100 && score < 200) {
-            return 2;
-        } else if (score >= 200) {
-            return 3;
-        } else {
-            return 1;
+    public int scoreCheck() { // 레벨 관리
+        if (score >= 100 && score < 200) { // 100 점 이상
+            return 2; // level 2
+        } else if (score >= 200) { // 200 이상
+            return 3; // level 3
+        } else { // 100 미만
+            return 1; // level 1
         }
     }
 }

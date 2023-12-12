@@ -38,11 +38,11 @@ public class StartDisplay extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String name = inputName.getText();
-                if (name.equals("")) {
+                if (name.equals("")) { // 이름을 입력하지 않았다면
                     JOptionPane.showMessageDialog(StartDisplay.this, "이름을 입력해주세요!!");
                     inputName.requestFocus();
                     return;
-                } else if (name.length() > 5) {
+                } else if (name.length() > 5) { // 5글자가 넘어가면 (게임 오버 창에서 5글자 이상은 프레임을 넘어감)
                     JOptionPane.showMessageDialog(StartDisplay.this, "최대 5글자입니다!!");
                     inputName.setText("");
                     inputName.requestFocus();
@@ -59,6 +59,7 @@ public class StartDisplay extends JFrame {
 
 
     class startPanel extends JPanel {
+        // 배경 이미지
         @Override
         public void paintComponent(Graphics g) {
             g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), this); // this or null

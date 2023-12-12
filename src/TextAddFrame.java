@@ -3,11 +3,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-public class textAddFrame extends JFrame {
+public class TextAddFrame extends JFrame {
     private JTextField textField;
     File file = new File("words.txt");
 
-    public textAddFrame() {
+    public TextAddFrame() {
         setTitle("어떤 단어를 추가 할까요?");
         setSize(200, 200);
         Container c = getContentPane();
@@ -21,8 +21,8 @@ public class textAddFrame extends JFrame {
         c.add(label);
 
         JButton btn = new JButton("확인");
-        btn.setSize(50, 30);
-        btn.setLocation(73, 100);
+        btn.setSize(70, 30);
+        btn.setLocation(65, 100);
         btn.setFont(new Font("Apple SD Gothic Neo", Font.PLAIN, 13));
         c.add(btn);
         btn.addActionListener(new addWordAction());
@@ -38,6 +38,7 @@ public class textAddFrame extends JFrame {
     }
 
     private class addWordAction implements ActionListener {
+        // 입력 받았으면 추가 후 필드 지우기
         @Override
         public void actionPerformed(ActionEvent e) {
             String word = textField.getText();
@@ -47,6 +48,7 @@ public class textAddFrame extends JFrame {
         }
     }
 
+    // 추가
     private void addWord(String word) {
         try {
             FileWriter writer = new FileWriter(file, true);

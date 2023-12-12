@@ -87,6 +87,7 @@ public class GameOverFrame extends JFrame {
         }
     }
 
+    // 겹치는 이름 검사
     private void recordManagement() {
         try {
             FileReader fileReader = new FileReader(file);
@@ -129,6 +130,7 @@ public class GameOverFrame extends JFrame {
         }
     }
 
+    // 높은 순 정렬
     public void sortingPlayers() {
         String[] tempName = new String[players.size()];
         int[] tempScore = new int[players.size()];

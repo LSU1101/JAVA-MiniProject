@@ -55,7 +55,7 @@ public class GameFrame extends JFrame {
         addWord.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                textAddFrame addText = new textAddFrame();
+                TextAddFrame addText = new TextAddFrame();
             }
         });
     }

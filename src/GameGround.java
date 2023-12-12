@@ -267,7 +267,7 @@ public class GameGround extends JPanel {
             while (true) {
                 pauseCheck();
                 sec++;
-                if (sec == 30) {
+                if (sec == 60) {
                     gameThread.interrupt();
                     timeThread.interrupt();
                     musicThread.stopMusic();

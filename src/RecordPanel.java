@@ -26,7 +26,7 @@ public class RecordPanel extends JPanel {
         title.setHorizontalAlignment(JLabel.CENTER);
         add(title);
 
-
+        // 상위 5명 출력
         JLabel[] player = new JLabel[5];
         for (int i = 0; i < player.length; i++) {
             player[i] = new JLabel("");
